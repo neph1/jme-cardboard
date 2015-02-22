@@ -13,3 +13,6 @@ For an example, look at test/CardboardStarTravel
 
 If you wish to build the sources yourself, it needs access to an android.jar file.
 
+Disclaimer:
+This has been developed against jMonkeyEngine 3.1. Support in 3.0 is not verified.
+
