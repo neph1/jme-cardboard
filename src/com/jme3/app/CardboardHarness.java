@@ -23,6 +23,7 @@ import com.jme3.input.android.AndroidSensorJoyInput;
 import com.jme3.input.controls.TouchListener;
 import com.jme3.input.controls.TouchTrigger;
 import com.jme3.input.event.TouchEvent;
+import com.jme3.state.CardboardState;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.SystemListener;
@@ -267,6 +268,9 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
         // AndroidHarness wraps the app as a SystemListener.
         ctx.setSystemListener(this);
         layoutDisplay();
+        
+        CardboardState vrAppState = new CardboardState(ctx);
+        (getJmeApplication()).getStateManager().attach(vrAppState);
     }
 
     @Override
