@@ -4,10 +4,14 @@ Google Cardboard integration for jMonkeyEngine 3
 How do I use this thing!?
 
 Before using it, you need to add Android support to your project through the SDK:
+
 http://wiki.jmonkeyengine.org/doku.php/jme3:android?s[]=android
 
 You also need to follow the instructions for how to develop for Google Cardboard:
+
 https://developers.google.com/cardboard/android/download
+
+Then, the project specific things:
 
 1. Add jme-cardboard.jar to your project.
 2. Turn on Android deployment for your project (Properties/Application/Android
