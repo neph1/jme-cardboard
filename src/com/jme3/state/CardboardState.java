@@ -83,7 +83,6 @@ public class CardboardState extends AbstractAppState{
         tempVars.tempMat4.multLocal(transformMatrix);
         tempVars.tempMat4.toTranslationVector(tempVars.vect1);
         tempVars.tempMat4.toRotationQuat(tempVars.quat1);
-        
         camRight.setFrame(tempVars.vect1, tempVars.quat1);
         tempVars.release();
     }
@@ -106,6 +105,20 @@ public class CardboardState extends AbstractAppState{
         camLeft.setViewPort(0.0f, 0.5f, 0.0f, 1.0f);
         camRight.setViewPort(0.5f, 1f, 0.0f, 1f);
         
+    }
+    
+    /**
+     * Called from CardboardHarness when the trigger is pressed
+     */
+    public void onCardboardTrigger(){
+        
+    }
+    
+    /**
+     * Calls CardboardView.resetHeadtracker() via the context
+     */
+    public void resetHeadTracker(){
+        context.resetHeadtracker();
     }
     
 }

@@ -183,6 +183,7 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
     final private String ESCAPE_EVENT = "TouchEscape";
     private boolean firstDrawFrame = true;
     private boolean inConfigChange = false;
+    private CardboardState vrAppState;
 
     private class DataObject {
         protected Application app = null;
@@ -269,7 +270,7 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
         ctx.setSystemListener(this);
         layoutDisplay();
         
-        CardboardState vrAppState = new CardboardState(ctx);
+        vrAppState = new CardboardState(ctx);
         (getJmeApplication()).getStateManager().attach(vrAppState);
     }
 
@@ -599,5 +600,12 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
             }
         }
         isGLThreadPaused = true;
+    }
+    
+    
+    @Override
+    public void onCardboardTrigger() {
+        super.onCardboardTrigger();
+         vrAppState.onCardboardTrigger();
     }
 }

@@ -13,7 +13,6 @@ import android.os.Build;
 import com.google.vrtoolkit.cardboard.CardboardDeviceParams;
 import com.google.vrtoolkit.cardboard.CardboardView;
 import com.google.vrtoolkit.cardboard.CardboardView.Renderer;
-import com.google.vrtoolkit.cardboard.CardboardView.StereoRenderer;
 import com.google.vrtoolkit.cardboard.Eye;
 import com.google.vrtoolkit.cardboard.HeadMountedDisplayManager;
 import com.google.vrtoolkit.cardboard.HeadTransform;
@@ -43,7 +42,8 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
     private Eye rightEye;
     private HeadMountedDisplayManager mHMDManager;
     private HeadTracker mHeadTracker;
-    private HeadTransform ht;
+    private HeadTransform mHeadTransform;
+    private CardboardView mView;
     
     public CardboardContext(){
         
@@ -68,19 +68,19 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
         mHMDManager.getHeadMountedDisplay().setCardboardDeviceParams(params);
 //        mHMDManager.getHeadMountedDisplay();
         // Start to set up the view
-        CardboardView view = new CardboardView(context);
+        mView = new CardboardView(context);
         if (androidInput == null) {
             androidInput = new AndroidInputHandler();
         }
-        androidInput.setView(view);
+        androidInput.setView(mView);
         androidInput.loadSettings(settings);
 
         // setEGLContextClientVersion must be set before calling setRenderer
         // this means it cannot be set in AndroidConfigChooser (too late)
-        view.setEGLContextClientVersion(2);
+        mView.setEGLContextClientVersion(2);
 
-        view.setFocusableInTouchMode(true);
-        view.setFocusable(true);
+        mView.setFocusableInTouchMode(true);
+        mView.setFocusable(true);
 
         // setFormat must be set before AndroidConfigChooser is called by the surfaceview.
         // if setFormat is called after ConfigChooser is called, then execution
@@ -93,35 +93,36 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
         logger.log(Level.FINE, "curAlphaBits: {0}", curAlphaBits);
         if (curAlphaBits >= 8) {
             logger.log(Level.FINE, "Pixel Format: TRANSLUCENT");
-            view.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-            view.setZOrderOnTop(true);
+            mView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+            mView.setZOrderOnTop(true);
         } else if (curAlphaBits >= 1) {
             logger.log(Level.FINE, "Pixel Format: TRANSPARENT");
-            view.getHolder().setFormat(PixelFormat.TRANSPARENT);
+            mView.getHolder().setFormat(PixelFormat.TRANSPARENT);
         } else {
             logger.log(Level.FINE, "Pixel Format: OPAQUE");
-            view.getHolder().setFormat(PixelFormat.OPAQUE);
+            mView.getHolder().setFormat(PixelFormat.OPAQUE);
         }
 
         AndroidConfigChooser configChooser = new AndroidConfigChooser(settings);
-        view.setEGLConfigChooser(configChooser);
-        view.setRenderer((Renderer)this);
+        mView.setEGLConfigChooser(configChooser);
+        mView.setRenderer((Renderer)this);
 
         // Attempt to preserve the EGL Context on app pause/resume.
         // Not destroying and recreating the EGL context
         // will help with resume time by reusing the existing context to avoid
         // reloading all the OpenGL objects.
         if (Build.VERSION.SDK_INT >= 11) {
-            view.setPreserveEGLContextOnPause(true);
+            mView.setPreserveEGLContextOnPause(true);
         }
         logger.log(Level.INFO, "Cardboard view created ");
-        return view;
+        return mView;
     }
 
+    
     @Override
     public void onDrawFrame(HeadTransform ht, Eye eye, Eye eye1) {
         ht.getHeadView(temp, 0);
-        this.ht = ht;
+        this.mHeadTransform = ht;
         tempMat.set(temp);
         tempMat.toRotationQuat(orientation);
         tempMat.toTranslationVector(position);
@@ -168,8 +169,11 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
     }
 
     public HeadTransform getHt() {
-        return ht;
+        return mHeadTransform;
     }
 
+    public void resetHeadtracker(){
+        mView.resetHeadTracker();
+    }
     
 }

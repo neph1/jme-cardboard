@@ -4,7 +4,6 @@
  */
 package com.jme3.system.android;
 
-import android.view.View;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import java.util.logging.Level;
