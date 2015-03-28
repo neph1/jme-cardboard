@@ -1,7 +1,9 @@
 # jme-cardboard
-Google Cardboard integration for jMonkeyEngine 3
+Google Cardboard integration for jMonkeyEngine 3.1
 
 How do I use this thing!?
+
+This has only been tested against jMonkeyEngine 3.1 (trunk). It most likely won't work with 3.0 without modifications.
 
 Before using it, you need to add Android support to your project through the SDK:
 
