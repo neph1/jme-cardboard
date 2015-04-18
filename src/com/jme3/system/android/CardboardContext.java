@@ -59,6 +59,8 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
             if (info.reqGlEsVersion < 0x20000) {
                 throw new UnsupportedOperationException("OpenGL ES 2.0 is not supported on this device");
             }
+        } else if (Build.VERSION.SDK_INT < 9){
+            throw new UnsupportedOperationException("jME3 requires Android 2.3 or later");
         }
         CardboardDeviceParams params = new CardboardDeviceParams();
         params.setInterLensDistance(0.45f);

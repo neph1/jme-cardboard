@@ -94,6 +94,13 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
     protected int eglStencilBits = 0;
 
     /**
+     * Set the desired frame rate.  If frameRate > 0, the application
+     * will be capped at the desired frame rate.
+     * (default = -1, no frame rate cap)
+     */
+    protected int frameRate = -1;
+
+    /**
      * Sets the type of Audio Renderer to be used.
      * <p>
      * Android MediaPlayer / SoundPool can be used on all
@@ -165,15 +172,10 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
      */
     protected int splashPicID = 0;
     /**
-     * Set the screen orientation, default is SENSOR
-     * ActivityInfo.SCREEN_ORIENTATION_* constants package
-     * android.content.pm.ActivityInfo
-     *
-     * SCREEN_ORIENTATION_UNSPECIFIED SCREEN_ORIENTATION_LANDSCAPE
-     * SCREEN_ORIENTATION_PORTRAIT SCREEN_ORIENTATION_USER
-     * SCREEN_ORIENTATION_BEHIND SCREEN_ORIENTATION_SENSOR (default)
-     * SCREEN_ORIENTATION_NOSENSOR
+     * No longer used - Use the android:screenOrientation declaration in
+     * the AndroidManifest.xml file.
      */
+    @Deprecated
     protected int screenOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
     protected CardboardContext ctx;
     protected GLSurfaceView view = null;
@@ -214,9 +216,7 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
                 requestWindowFeature(Window.FEATURE_NO_TITLE);
             }
         }
-
         setRequestedOrientation(screenOrientation);
-//setContentView(com.mycompany.mygame.R.layout.main);
         final DataObject data = (DataObject) getLastNonConfigurationInstance();
         if (data != null) {
             logger.log(Level.FINE, "Using Retained App");
@@ -247,6 +247,8 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
 
             settings.setResolution(displaymetrics.widthPixels, displaymetrics.heightPixels);
             settings.setAudioRenderer(audioRendererType);
+
+            settings.setFrameRate(frameRate);
 
             // Create application instance
             try {
@@ -375,6 +377,7 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
      * @param dialog
      * @param whichButton
      */
+    @Override
     public void onClick(DialogInterface dialog, int whichButton) {
         if (whichButton != -2) {
             if (app != null) {
@@ -607,5 +610,12 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
     public void onCardboardTrigger() {
         super.onCardboardTrigger();
          vrAppState.onCardboardTrigger();
+    }
+    
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) 
+    {
+        //CardboardView view = getCardboardView();
+        return (view != null && view.dispatchTouchEvent(event)) || super.dispatchTouchEvent(event);
     }
 }
