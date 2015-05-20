@@ -616,6 +616,6 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
     public boolean dispatchTouchEvent(MotionEvent event) 
     {
         //CardboardView view = getCardboardView();
-        return (view != null && view.dispatchTouchEvent(event)) || super.dispatchTouchEvent(event);
+        return (view != null && view.dispatchTouchEvent(event) && view.onTouchEvent(event)) || super.dispatchTouchEvent(event);
     }
 }
