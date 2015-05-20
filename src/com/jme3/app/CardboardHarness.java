@@ -205,8 +205,7 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
         initializeLogHandler();
         JmeSystem.setSystemDelegate(new JmeAndroidCardboardSystem());
         logger.fine("onCreate");
-        super.onCreate(savedInstanceState);
-
+        
         if (screenFullScreen) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -216,6 +215,8 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
                 requestWindowFeature(Window.FEATURE_NO_TITLE);
             }
         }
+        super.onCreate(savedInstanceState);
+        
         setRequestedOrientation(screenOrientation);
         final DataObject data = (DataObject) getLastNonConfigurationInstance();
         if (data != null) {
