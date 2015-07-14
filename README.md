@@ -17,9 +17,9 @@ https://developers.google.com/cardboard/android/download
 Then, the project specific things:
 New way using CardboardHarnessFragment:
 1. Add jme-cardboard.jar to your project.
-2. Turn on Android deployment for your project (Properties/Application/Android
+2. Turn on Android deployment for your project (Properties/Application/Android)
 3. Follow these instructions to run jme in a fragment: http://www.softwarepioneering.com/2015/07/running-jmonkeyengine-3-on-android.html
-4. But instead of extending AndroidHarnessFragment, extend CardboardHarnessFragment instead.
+But instead of extending AndroidHarnessFragment, extend CardboardHarnessFragment instead. MainActivity should extend CardboardActivity
 
 Old way using CardboardHarness:
 1. Add jme-cardboard.jar to your project.
