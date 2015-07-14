@@ -29,7 +29,6 @@ import com.jme3.system.JmeSystem;
 import com.jme3.system.SystemListener;
 import com.jme3.system.android.CardboardContext;
 import com.jme3.system.android.JmeAndroidCardboardSystem;
-import com.jme3.system.android.JmeAndroidSystem;
 import com.jme3.util.AndroidLogHandler;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -217,7 +216,7 @@ public class CardboardHarness extends CardboardActivity implements TouchListener
                 requestWindowFeature(Window.FEATURE_NO_TITLE);
             }
         }
-
+        setRequestedOrientation(screenOrientation);
         final DataObject data = (DataObject) getLastNonConfigurationInstance();
         if (data != null) {
             logger.log(Level.FINE, "Using Retained App");
