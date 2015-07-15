@@ -54,7 +54,12 @@ public class CardboardHarnessFragment extends AndroidHarnessFragment {
         logger.fine(getClass().getSimpleName() + " onCreateView ");
         // Create the GLSurfaceView for the application
         view = ((OGLESContext) getJmeApplication().getContext()).createView(getActivity());
-        
+//        ((CardboardView) view).setOnCardboardTriggerListener(new Runnable() {
+//
+//            public void run() {
+//                onCardboardTrigger();
+//            }
+//        });
         ((CardboardActivity)getActivity()).setCardboardView((CardboardView) view);
         JmeAndroidCardboardSystem.setView(view);
         createLayout();
@@ -66,6 +71,10 @@ public class CardboardHarnessFragment extends AndroidHarnessFragment {
     public void onDestroyView() {
         JmeAndroidCardboardSystem.setView(null);
         super.onDestroyView(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void onCardboardTrigger(){
+        System.out.println("onCardboardTrigger");
     }
     
 }
