@@ -30,6 +30,14 @@ Old way using CardboardHarness:
 
 For an example, look at test/CardboardStarTravel
 
+If you need to set your own CardboardDeviceParams you can do so by a setter in CardboardContext. It has to be done before createView() is called.
+You can access it via CardboardHarnessFragment:
+
+((CardboardContext) getJmeApplication().getContext()).setCardboardDeviceParams(params);
+
+
+
+
 If you wish to build the sources yourself, it needs access to an android.jar file.
 
 Disclaimer:
