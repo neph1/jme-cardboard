@@ -45,6 +45,11 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
     private HeadTracker mHeadTracker;
     private HeadTransform mHeadTransform;
     private CardboardView mView;
+    private CardboardDeviceParams mParams;
+    
+    public CardboardContext(CardboardDeviceParams params){
+        mParams = params;
+    }
     
     public CardboardContext(){
         
@@ -63,13 +68,16 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
         } else if (Build.VERSION.SDK_INT < 9){
             throw new UnsupportedOperationException("jME3 requires Android 2.3 or later");
         }
-        CardboardDeviceParams params = new CardboardDeviceParams();
-        params.setInterLensDistance(0.45f);
-        params.setScreenToLensDistance(0.045f);
+        if(mParams == null){
+            mParams = new CardboardDeviceParams();
+            mParams.setInterLensDistance(0.45f);
+            mParams.setScreenToLensDistance(0.045f);
+        }
+        
 
 
         mHMDManager = new HeadMountedDisplayManager(context);
-        mHMDManager.getHeadMountedDisplay().setCardboardDeviceParams(params);
+        mHMDManager.getHeadMountedDisplay().setCardboardDeviceParams(mParams);
 //        mHMDManager.getHeadMountedDisplay();
         // Start to set up the view
         mView = new CardboardView(context);
@@ -84,7 +92,7 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
         androidInput.loadSettings(settings);
 
         mView.setEGLContextClientVersion(2);
-
+        mView.setVRModeEnabled(true);
         mView.setFocusableInTouchMode(true);
         mView.setFocusable(true);
 
@@ -170,5 +178,14 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
     public void resetHeadtracker(){
         mView.resetHeadTracker();
     }
+
+    public CardboardDeviceParams getCardboardDeviceParams() {
+        return mParams;
+    }
+
+    public void setCardboardDeviceParams(CardboardDeviceParams mParams) {
+        this.mParams = mParams;
+    }
+    
     
 }
