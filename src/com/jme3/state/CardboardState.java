@@ -63,14 +63,13 @@ public class CardboardState extends AbstractAppState{
         
         if(!viewPortSet){
             Viewport v = context.getLeftEye().getViewport();
-            
-            
             camLeft.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)v.width / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
             
             v = context.getRightEye().getViewport();
             camRight.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)(v.x + v.width) / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
             viewPortSet = true;
         }
+        
         // left eye
         tempVars.tempMat4.set(context.getLeftEye().getEyeView());
         tempVars.tempMat4.multLocal(transformMatrix);

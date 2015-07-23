@@ -68,17 +68,14 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
         } else if (Build.VERSION.SDK_INT < 9){
             throw new UnsupportedOperationException("jME3 requires Android 2.3 or later");
         }
-        if(mParams == null){
-            mParams = new CardboardDeviceParams();
-            mParams.setInterLensDistance(0.45f);
-            mParams.setScreenToLensDistance(0.045f);
-        }
-        
-
-
-        mHMDManager = new HeadMountedDisplayManager(context);
-        mHMDManager.getHeadMountedDisplay().setCardboardDeviceParams(mParams);
-//        mHMDManager.getHeadMountedDisplay();
+//        if(mParams == null){
+//            mParams = new CardboardDeviceParams();
+//            mParams.setInterLensDistance(0.45f);
+//            mParams.setScreenToLensDistance(0.045f);
+//        }
+//        
+//        mHMDManager = new HeadMountedDisplayManager(context);
+//        mHMDManager.getHeadMountedDisplay().setCardboardDeviceParams(mParams);
         // Start to set up the view
         mView = new CardboardView(context);
         if (androidInput == null) {
@@ -91,24 +88,19 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
         androidInput.setView(mView);
         androidInput.loadSettings(settings);
 
-        mView.setEGLContextClientVersion(2);
-        mView.setVRModeEnabled(true);
-        mView.setFocusableInTouchMode(true);
-        mView.setFocusable(true);
-
-        int curAlphaBits = settings.getAlphaBits();
-        logger.log(Level.FINE, "curAlphaBits: {0}", curAlphaBits);
-        if (curAlphaBits >= 8) {
-            logger.log(Level.FINE, "Pixel Format: TRANSLUCENT");
-            mView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-            mView.setZOrderOnTop(true);
-        } else if (curAlphaBits >= 1) {
-            logger.log(Level.FINE, "Pixel Format: TRANSPARENT");
-            mView.getHolder().setFormat(PixelFormat.TRANSPARENT);
-        } else {
-            logger.log(Level.FINE, "Pixel Format: OPAQUE");
-            mView.getHolder().setFormat(PixelFormat.OPAQUE);
-        }
+//        int curAlphaBits = settings.getAlphaBits();
+//        logger.log(Level.FINE, "curAlphaBits: {0}", curAlphaBits);
+//        if (curAlphaBits >= 8) {
+//            logger.log(Level.FINE, "Pixel Format: TRANSLUCENT");
+//            mView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+//            mView.setZOrderOnTop(true);
+//        } else if (curAlphaBits >= 1) {
+//            logger.log(Level.FINE, "Pixel Format: TRANSPARENT");
+//            mView.getHolder().setFormat(PixelFormat.TRANSPARENT);
+//        } else {
+//            logger.log(Level.FINE, "Pixel Format: OPAQUE");
+//            mView.getHolder().setFormat(PixelFormat.OPAQUE);
+//        }
 
         AndroidConfigChooser configChooser = new AndroidConfigChooser(settings);
         mView.setEGLConfigChooser(configChooser);
