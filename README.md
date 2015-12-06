@@ -1,5 +1,6 @@
 # jme-cardboard
-Google Cardboard integration for jMonkeyEngine 3.1
+Google Cardboard integration for jMonkeyEngine 3.1.
+Take any jMonkeyEngine 3 application and run it in mobile VR.
 
 How do I use this thing!?
 
