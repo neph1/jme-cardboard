@@ -32,6 +32,5 @@ You can access it via CardboardHarnessFragment:
 
 If you wish to build the sources yourself, it needs access to an android.jar file.
 
-Disclaimer:
-This has been developed against jMonkeyEngine 3.1. Support in 3.0 is not verified.
-
+Troubleshooting:
+If you find that the screen is black post launch, trying moving looking around in different directions
