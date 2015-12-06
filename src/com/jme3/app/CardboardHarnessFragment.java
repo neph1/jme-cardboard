@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.google.vrtoolkit.cardboard.CardboardActivity;
-import com.google.vrtoolkit.cardboard.CardboardView;
 import com.jme3.state.CardboardState;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.android.CardboardContext;
@@ -60,7 +58,6 @@ public class CardboardHarnessFragment extends AndroidHarnessFragment {
 //                onCardboardTrigger();
 //            }
 //        });
-        ((CardboardActivity)getActivity()).setCardboardView((CardboardView) view);
         JmeAndroidCardboardSystem.setView(view);
         createLayout();
         view.addOnLayoutChangeListener(this);

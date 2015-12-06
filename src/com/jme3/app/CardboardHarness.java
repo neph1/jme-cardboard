@@ -46,6 +46,7 @@ import java.util.logging.Logger;
  * @author larynx
  * @author Cardboard adaption: reden
  */
+@Deprecated
 public class CardboardHarness extends CardboardActivity implements TouchListener, DialogInterface.OnClickListener, SystemListener {
 
     protected final static Logger logger = Logger.getLogger(CardboardHarness.class.getName());

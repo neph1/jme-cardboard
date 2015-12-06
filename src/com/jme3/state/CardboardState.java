@@ -15,6 +15,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Spatial;
 import com.jme3.system.android.CardboardContext;
 import com.jme3.util.TempVars;
 
@@ -28,14 +29,12 @@ public class CardboardState extends AbstractAppState{
     Camera camLeft,camRight;
     ViewPort viewPortLeft, viewPortRight;
     private CardboardContext context;
-    private Matrix4f transformMatrix;
-    private Quaternion directionQuat;
+    private Spatial observer;
+    final private float[] tempAngles = new float[3];
     
     private boolean viewPortSet = false;
     public CardboardState(CardboardContext hmd){
         this.context = hmd;
-        transformMatrix = new Matrix4f();
-        directionQuat = new Quaternion();
     }
     
     @Override
@@ -48,8 +47,6 @@ public class CardboardState extends AbstractAppState{
         camLeft.setLocation(Vector3f.ZERO);
         camLeft.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         setupFiltersAndViews();
-        directionQuat.lookAt(Vector3f.UNIT_Z.negate(), Vector3f.UNIT_Y);
-        transformMatrix.setRotationQuaternion(directionQuat);
     }
 
     @Override
@@ -64,24 +61,31 @@ public class CardboardState extends AbstractAppState{
         if(!viewPortSet){
             Viewport v = context.getLeftEye().getViewport();
             camLeft.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)v.width / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
-            
+//            camLeft.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getLeftEye().getFov().getLeft(), context.getLeftEye().getFov().getRight(), context.getLeftEye().getFov().getTop(), context.getLeftEye().getFov().getBottom());
+//            camLeft.setProjectionMatrix(new Matrix4f( context.getLeftEye().getPerspective(camLeft.getFrustumNear(), camLeft.getFrustumFar())));
             v = context.getRightEye().getViewport();
             camRight.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)(v.x + v.width) / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
+//            camRight.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getRightEye().getFov().getLeft(), context.getRightEye().getFov().getRight(), context.getRightEye().getFov().getTop(), context.getRightEye().getFov().getBottom());
+//            camRight.setProjectionMatrix(new Matrix4f( context.getRightEye().getPerspective(camRight.getFrustumNear(), camRight.getFrustumFar())));
             viewPortSet = true;
         }
-        
         // left eye
-        tempVars.tempMat4.set(context.getLeftEye().getEyeView());
-        tempVars.tempMat4.multLocal(transformMatrix);
-        tempVars.tempMat4.toTranslationVector(tempVars.vect1);
-        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
-        camLeft.setFrame(tempVars.vect1, tempVars.quat1);
+        tempVars.quat1.set(context.getOrientation());
+        tempVars.quat1.toAngles(tempAngles);
+        tempAngles[0] = -tempAngles[0];
+        tempVars.quat1.fromAngles(tempAngles);
+        if(observer != null){
+            tempVars.quat1.multLocal(observer.getLocalRotation());
+        }
         
+        tempVars.tempMat4.set(context.getLeftEye().getEyeView());
+        tempVars.tempMat4.toTranslationVector(tempVars.vect1);
+//        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
+        camLeft.setFrame(tempVars.vect1, tempVars.quat1);
         // right eye
         tempVars.tempMat4.set(context.getRightEye().getEyeView());
-        tempVars.tempMat4.multLocal(transformMatrix);
         tempVars.tempMat4.toTranslationVector(tempVars.vect1);
-        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
+//        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
         camRight.setFrame(tempVars.vect1, tempVars.quat1);
         tempVars.release();
     }
@@ -120,4 +124,7 @@ public class CardboardState extends AbstractAppState{
         context.resetHeadtracker();
     }
     
+    public void setObserver(Spatial observer){
+        this.observer = observer;
+    }
 }
