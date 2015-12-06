@@ -71,10 +71,6 @@ public class CardboardState extends AbstractAppState{
         }
         // left eye
         tempVars.quat1.set(context.getOrientation());
-        tempVars.quat1.toAngles(tempAngles);
-        tempAngles[0] = -tempAngles[0];
-        tempAngles[2] = -tempAngles[2];
-        tempVars.quat1.fromAngles(tempAngles);
         if(observer != null){
             tempVars.quat1.multLocal(observer.getLocalRotation());
         }
