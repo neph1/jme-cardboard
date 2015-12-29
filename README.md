@@ -1,5 +1,5 @@
 # jme-cardboard
-Google Cardboard integration for jMonkeyEngine 3.1.
+Google Cardboard integration for jMonkeyEngine 3.1. Tested with cardboard.jar 0.5.8
 Take any jMonkeyEngine 3 application and run it in mobile VR.
 
 How do I use this thing!?
@@ -29,8 +29,7 @@ You can access it via CardboardHarnessFragment:
 ((CardboardContext) getJmeApplication().getContext()).setCardboardDeviceParams(params);
 
 
-
 If you wish to build the sources yourself, it needs access to an android.jar file.
 
 Troubleshooting:
-If you find that the screen is black post launch, trying moving looking around in different directions
+It seems to be important that the starting orientation is "forward" according to the cardboard. If you find that the screen is black when starting, try looking in the opposite direction, or rotate the spatial.
