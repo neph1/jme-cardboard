@@ -56,33 +56,45 @@ public class CardboardState extends AbstractAppState{
             return;
         }
         TempVars tempVars = TempVars.get();
-        
-        
+
+
         if(!viewPortSet){
+            //Left eye
             Viewport v = context.getLeftEye().getViewport();
-            camLeft.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)v.width / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
-//            camLeft.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getLeftEye().getFov().getLeft(), context.getLeftEye().getFov().getRight(), context.getLeftEye().getFov().getTop(), context.getLeftEye().getFov().getBottom());
-//            camLeft.setProjectionMatrix(new Matrix4f( context.getLeftEye().getPerspective(camLeft.getFrustumNear(), camLeft.getFrustumFar())));
+
+            camLeft.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)(v.x + v.width) / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
+            camLeft.setFrustumPerspective(context.getLeftEye().getFov().getTop() + context.getLeftEye().getFov().getBottom(), (float)v.width / v.height, camLeft.getFrustumNear(), camLeft.getFrustumFar());
+            camLeft.setProjectionMatrix(new Matrix4f( context.getLeftEye().getPerspective(camLeft.getFrustumNear(), camLeft.getFrustumFar())));
+
+            // Right eye
             v = context.getRightEye().getViewport();
+
             camRight.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)(v.x + v.width) / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
-//            camRight.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getRightEye().getFov().getLeft(), context.getRightEye().getFov().getRight(), context.getRightEye().getFov().getTop(), context.getRightEye().getFov().getBottom());
-//            camRight.setProjectionMatrix(new Matrix4f( context.getRightEye().getPerspective(camRight.getFrustumNear(), camRight.getFrustumFar())));
+            camRight.setFrustumPerspective(context.getRightEye().getFov().getTop() + context.getRightEye().getFov().getBottom(), (float)v.width / v.height, camRight.getFrustumNear(), camRight.getFrustumFar());
+            camRight.setProjectionMatrix(new Matrix4f( context.getRightEye().getPerspective(camRight.getFrustumNear(), camRight.getFrustumFar())));
+
             viewPortSet = true;
         }
+
         // left eye
         tempVars.quat1.set(context.getOrientation());
+
+        tempVars.quat1.toAngles(tempAngles);
+        tempAngles[0] = -tempAngles[0];
+        tempAngles[2] = -tempAngles[2];
+        tempVars.quat1.fromAngles(tempAngles);
+
         if(observer != null){
             tempVars.quat1.multLocal(observer.getLocalRotation());
         }
-        
+
         tempVars.tempMat4.set(context.getLeftEye().getEyeView());
         tempVars.tempMat4.toTranslationVector(tempVars.vect1);
-//        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
         camLeft.setFrame(tempVars.vect1, tempVars.quat1);
+
         // right eye
         tempVars.tempMat4.set(context.getRightEye().getEyeView());
         tempVars.tempMat4.toTranslationVector(tempVars.vect1);
-//        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
         camRight.setFrame(tempVars.vect1, tempVars.quat1);
         tempVars.release();
     }
