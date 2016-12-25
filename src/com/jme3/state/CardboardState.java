@@ -61,12 +61,12 @@ public class CardboardState extends AbstractAppState{
         if(!viewPortSet){
             Viewport v = context.getLeftEye().getViewport();
             camLeft.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)v.width / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
-//            camLeft.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getLeftEye().getFov().getLeft(), context.getLeftEye().getFov().getRight(), context.getLeftEye().getFov().getTop(), context.getLeftEye().getFov().getBottom());
-//            camLeft.setProjectionMatrix(new Matrix4f( context.getLeftEye().getPerspective(camLeft.getFrustumNear(), camLeft.getFrustumFar())));
+            camLeft.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getLeftEye().getFov().getLeft(), context.getLeftEye().getFov().getRight(), context.getLeftEye().getFov().getTop(), context.getLeftEye().getFov().getBottom());
+            camLeft.setProjectionMatrix(new Matrix4f( context.getLeftEye().getPerspective(camLeft.getFrustumNear(), camLeft.getFrustumFar())));
             v = context.getRightEye().getViewport();
             camRight.setViewPort((float)v.x/ context.getSettings().getWidth(), (float)(v.x + v.width) / context.getSettings().getWidth(), (float)v.y/ context.getSettings().getHeight(), (float)v.height / context.getSettings().getHeight());
-//            camRight.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getRightEye().getFov().getLeft(), context.getRightEye().getFov().getRight(), context.getRightEye().getFov().getTop(), context.getRightEye().getFov().getBottom());
-//            camRight.setProjectionMatrix(new Matrix4f( context.getRightEye().getPerspective(camRight.getFrustumNear(), camRight.getFrustumFar())));
+            camRight.setFrustum(camLeft.getFrustumNear(), camLeft.getFrustumFar(), context.getRightEye().getFov().getLeft(), context.getRightEye().getFov().getRight(), context.getRightEye().getFov().getTop(), context.getRightEye().getFov().getBottom());
+            camRight.setProjectionMatrix(new Matrix4f( context.getRightEye().getPerspective(camRight.getFrustumNear(), camRight.getFrustumFar())));
             viewPortSet = true;
         }
         // left eye
@@ -99,7 +99,7 @@ public class CardboardState extends AbstractAppState{
         camRight = camLeft.clone();
         
         viewPortRight = app.getRenderManager().createPreView("Right viewport", camRight);
-        viewPortRight.setClearFlags(true, true, true);
+        viewPortRight.setClearFlags(false, false, true);
         viewPortRight.attachScene(this.app.getRootNode());
 
         camLeft.setViewPort(0.0f, 0.5f, 0.0f, 1.0f);
