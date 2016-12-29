@@ -71,19 +71,29 @@ public class CardboardState extends AbstractAppState{
         }
         // left eye
         tempVars.quat1.set(context.getOrientation());
-        if(observer != null){
-            tempVars.quat1.multLocal(observer.getLocalRotation());
-        }
-        
+
+        tempVars.quat1.toAngles(tempAngles);
+        tempAngles[0] = -tempAngles[0];
+        tempAngles[2] = -tempAngles[2];
+        tempVars.quat1.fromAngles(tempAngles);
+
         tempVars.tempMat4.set(context.getLeftEye().getEyeView());
         tempVars.tempMat4.toTranslationVector(tempVars.vect1);
-//        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
+        if(observer != null){
+            tempVars.quat1.set(observer.getLocalRotation().multLocal(tempVars.quat1));
+            tempVars.vect1.set(observer.getWorldTranslation());
+        }
         camLeft.setFrame(tempVars.vect1, tempVars.quat1);
+
         // right eye
         tempVars.tempMat4.set(context.getRightEye().getEyeView());
         tempVars.tempMat4.toTranslationVector(tempVars.vect1);
-//        tempVars.tempMat4.toRotationQuat(tempVars.quat1);
+        if(observer != null){
+            tempVars.vect1.set(observer.getWorldTranslation());
+        }
         camRight.setFrame(tempVars.vect1, tempVars.quat1);
+
+
         tempVars.release();
     }
 
