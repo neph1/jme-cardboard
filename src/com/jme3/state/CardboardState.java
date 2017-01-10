@@ -80,7 +80,7 @@ public class CardboardState extends AbstractAppState{
         tempVars.tempMat4.set(context.getLeftEye().getEyeView());
         tempVars.tempMat4.toTranslationVector(tempVars.vect1);
         if(observer != null){
-            tempVars.quat1.set(observer.getLocalRotation().multLocal(tempVars.quat1));
+            tempVars.quat1.set(observer.getLocalRotation().mult(tempVars.quat1));
             tempVars.vect1.set(observer.getWorldTranslation());
         }
         camLeft.setFrame(tempVars.vect1, tempVars.quat1);
