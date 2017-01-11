@@ -88,6 +88,8 @@ public class CardboardContext extends OGLESContext implements CardboardView.Rend
         androidInput.setView(mView);
         androidInput.loadSettings(settings);
 
+	mView.setFocusable(true);
+
 //        int curAlphaBits = settings.getAlphaBits();
 //        logger.log(Level.FINE, "curAlphaBits: {0}", curAlphaBits);
 //        if (curAlphaBits >= 8) {
